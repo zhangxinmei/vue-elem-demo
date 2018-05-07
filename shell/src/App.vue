@@ -33,9 +33,7 @@ export default {
     this.axios.get('/api/seller').then((res)=>{
       res=res.data
       if(res.errno===ERR_OK){
-        console.log(111,res)
         this.seller=res.data
-        console.log(222,this.seller)
       }
     })
   }

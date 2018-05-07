@@ -1,5 +1,5 @@
 <template>
-  <div class="title">
+  <div class="title-ct">
     <div class="line"></div>
     <div class="text">{{titleText}}</div>
     <div class="line"></div>
@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style lang="less">
-.title {
+.title-ct {
   display: flex;
   width: 80%;
   margin: 28px auto 24px auto;

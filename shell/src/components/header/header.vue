@@ -27,7 +27,8 @@
     <div class="herder-bg">
       <img :src="seller.avatar" alt="">
     </div>
-    <div v-show="isDetailShow" class="detial">
+    <transition name="fade">
+ <div v-show="isDetailShow" class="detial">
       <!--CSS sticky footer -->
       <div class="detail-wrap clearfix">
         <div class="detail-mian">
@@ -54,18 +55,19 @@
         <i class="icon-close"></i>
       </div>
     </div>
+    </transition>
   </div>
 </template>
 
 <script type='text/ecmascript-6'>
 import star from "../star/star";
-import headline from '../title/title'
+import headline from "../title/title";
 export default {
   data() {
     return {
       isDetailShow: false,
-      titleTextOffer:'优惠活动',
-      titleTextBulletin:'商家公告'
+      titleTextOffer: "优惠活动",
+      titleTextBulletin: "商家公告"
     };
   },
   components: {
@@ -229,7 +231,15 @@ export default {
     height: 100%;
     width: 100%;
     z-index: 2;
+    backdrop-filter: blur(10px);
     background: rgba(7, 17, 27, 0.8);
+     &.fade-enter-active, &.fade-leave-active{
+        transition: all 0.5s;
+     }
+     &.fade-enter, &.fade-leave-active{
+        opacity: 0;
+        background:rgba(7, 17, 27, 0);
+     } 
     .detail-wrap {
       width: 100%;
       min-height: 100%;
@@ -256,10 +266,10 @@ export default {
             &:last-child {
               margin-bottom: 0;
             }
-            &::after{
+            &::after {
               display: inline-block;
               vertical-align: middle;
-              content: '';
+              content: "";
               height: 100%;
             }
             .icon {
@@ -286,17 +296,17 @@ export default {
                 background-image: url(./img/special_2@3x.png);
               }
             }
-            .text{
+            .text {
               display: inline-block;
               vertical-align: middle;
               font-size: 12px;
             }
           }
         }
-        .bulletin{
+        .bulletin {
           width: 80%;
           margin: 0 auto;
-          .content{
+          .content {
             padding: 0 12px;
             line-height: 24px;
             font-size: 12px;
