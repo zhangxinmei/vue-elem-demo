@@ -154,7 +154,7 @@ export default {
             background-image: url(./img/invoice_1@2x.png);
           }
           &.special {
-            background-image: url(./img/special_2@3x.png);
+            background-image: url(./img/special_1@2x.png);
           }
         }
         .text {
