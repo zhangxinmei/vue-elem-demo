@@ -8,8 +8,8 @@
 
 <script>
 export default {
-    props:['titleText']
-};
+  props: ['titleText']
+}
 </script>
 
 <style lang="less">
