@@ -1,43 +1,65 @@
 <template>
-    <transition name="move">
-        <div class="food" v-show="showFoodDetil" ref="food">
-            <div class="food-content">
-                <div class="img-header">
-                    <img :src="food.image" alt="">
-                    <div class="back" @click="back">
-                        <i class="icon-arrow_lift"></i>
-                    </div>
-                </div>
-                <div class="content">
-                    <h1 class="title">{{food.name}}</h1>
-                    <div class="detail">
-                        <span class="sell-count">月售{{food.sellCount}}</span>
-                        <span class="rating">好评率{{food.rating}}%</span>
-                    </div>
-                    <div class="price">
-                        <span class="now">￥{{food.price}}</span>
-                        <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
-                    </div>
-                    <div class="cartcontrol-wrap" v-if="food.count>0">
-                        <cartcontrol :food="food"></cartcontrol>
-                    </div>
-                    <transition name="fade">
-                        <div class="buy" v-if="!food.count||food.count===0" @click="addFirstFood">加入购物车</div>
-                    </transition>  
-                </div>
-                <slpit v-show="food.info"></slpit>
-                <div class="info" v-show="food.info">
-                        <h1 class="title">商品介绍</h1>                      
-                    <div class="text">{{food.info}}</div>
-                </div>
-                <slpit v-show="food.info"></slpit>
-                <div class="rating">
-                    <h1 class="title">商品评价</h1>
-                    <ratingselect @select="selectRating" @toggle="toggleContent" :ratings="food.ratings" :select-type="selectType" :only-content="onlyContent" :desc="desc"></ratingselect>
-                </div>
-            </div>
+  <transition name="move">
+    <div class="food" v-show="showFoodDetil" ref="food">
+      <div class="food-content">
+        <div class="img-header">
+          <img :src="food.image" alt="">
+          <div class="back" @click="back">
+            <i class="icon-arrow_lift"></i>
+          </div>
         </div>
-    </transition>
+        <div class="content">
+          <h1 class="title">{{food.name}}</h1>
+          <div class="detail">
+            <span class="sell-count">月售{{food.sellCount}}</span>
+            <span class="rating">好评率{{food.rating}}%</span>
+          </div>
+          <div class="price">
+            <span class="now">￥{{food.price}}</span>
+            <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
+          </div>
+          <div class="cartcontrol-wrap" v-if="food.count>0">
+            <cartcontrol :food="food"></cartcontrol>
+          </div>
+          <transition name="fade">
+            <div class="buy" v-if="!food.count||food.count===0" @click="addFirstFood">加入购物车</div>
+          </transition>
+        </div>
+        <slpit v-show="food.info"></slpit>
+        <div class="info" v-show="food.info">
+          <h1 class="title">商品介绍</h1>
+          <div class="text">{{food.info}}</div>
+        </div>
+        <slpit v-show="food.info"></slpit>
+        <div class="rating">
+          <h1 class="title">商品评价</h1>
+          <ratingselect @select="selectRating" @toggle="toggleContent" :ratings="food.ratings" :select-type="selectType" :only-content="onlyContent" :desc="desc"></ratingselect>
+          <div class="rating-warp">
+            <ul v-if="food.ratings&&food.ratings.length">
+              <li v-show="needShow(rating.rateType,rating.text)" v-for="(rating,index) in food.ratings" :key="index" class="rating-item border-1px">
+                <div class="rating-time">{{rating.rateTime}}</div>
+                <div class="user">
+                  <span class="name">{{rating.username}}</span>
+                  <div class="user-img">
+                    <img :src="rating.avatar" class="avater" alt="">
+                  </div>
+                </div>
+
+                <p class="text">
+                  <i :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></i>
+                  {{rating.text}}
+                </p>
+              </li>
+            </ul>
+            <div class="no-rating" v-else>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </transition>
 </template>
 
 
@@ -46,7 +68,7 @@ import BScroll from 'better-scroll'
 import cartcontrol from '../cartcontrol/cartcontrol.vue'
 import slpit from '../split/split.vue'
 import ratingselect from '../ratingselect/ratingselect.vue'
-const ALL=2
+const ALL = 2
 export default {
   props: {
     food: {
@@ -61,20 +83,20 @@ export default {
   data() {
     return {
       showFoodDetil: false,
-      selectType:ALL,
-      onlyContent:true,
-      desc:{
-        all:'全部',
-        positive:'推荐',
-        negative:'吐槽'
+      selectType: ALL,
+      onlyContent: true,
+      desc: {
+        all: '全部',
+        positive: '推荐',
+        negative: '吐槽'
       }
     }
   },
   methods: {
     show() {
       this.showFoodDetil = true
-      this.selectType=ALL
-      this.onlyContent=true
+      this.selectType = ALL
+      this.onlyContent = true
       this.$nextTick(() => {
         this.scroll = new BScroll(this.$refs.food, {
           click: true
@@ -88,19 +110,30 @@ export default {
       this.$set(this.food, 'count', 1)
     },
     selectRating(type) {
-      this.selectType=type;
-      this.$nextTick(()=>{
-        this.scroll.refresh();
+      this.selectType = type
+      this.$nextTick(() => {
+        this.scroll.refresh()
       })
     },
     toggleContent() {
-      this.onlyContent=!this.onlyContent;
+      this.onlyContent = !this.onlyContent
+    },
+    needShow(type,text) {
+        if(this.onlyContent&&!text){
+          return false;
+        }
+        if(this.selectType===ALL){
+          return true;
+        }else{
+          return type===this.selectType
+        }
     }
   }
 }
 </script>
 
 <style lang="less">
+@import '../../common/less/mixin.less';
 .food {
   position: fixed;
   top: 0;
@@ -214,12 +247,66 @@ export default {
       color: #666;
     }
   }
-  .rating{
-    .title{
+  .rating {
+    .title {
       margin-left: 18px;
       line-height: 34px;
       font-size: 14px;
       color: rgb(7, 17, 27);
+    }
+    .rating-warp {
+      padding: 0 18px;
+      .rating-item {
+        position: relative;
+        padding: 16px 0;
+        .border-1px;
+        .user {
+          position: absolute;
+          right: 0;
+          top: 16px;
+          line-height: 12px;
+          font-size: 0;
+          .name {
+            display: inline-block;
+            vertical-align: top;
+            font-size: 10px;
+            color: rgb(147, 153, 159);
+          }
+          .user-img {
+            display: inline-block;
+            vertical-align: top;
+            width: 12px;
+            height: 12px;
+            img {
+              width: 100%;
+              border-radius: 50%;
+            }
+          }
+        }
+        .rating-time {
+          margin-bottom: 6px;
+          font-size: 10px;
+          line-height: 12px;
+          color: rgb(147, 153, 159);
+        }
+        .text {
+          font-size: 12px;
+          line-height: 16px;
+          color: rgb(7, 17, 27);
+          .icon-thumb_up,
+          .icon-thumb_down {
+            margin-bottom: 4px;
+            font-size: 12px;
+            line-height: 24px;
+          }
+          .icon-thumb_up {
+            color: rgb(0, 160, 220);
+          }
+          .icon-thumb_down {
+            color: rgb(147, 153, 159);
+          }
+        }
+      }
     }
   }
 }
