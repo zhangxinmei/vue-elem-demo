@@ -37,7 +37,7 @@
           <div class="rating-warp">
             <ul v-if="food.ratings&&food.ratings.length">
               <li v-show="needShow(rating.rateType,rating.text)" v-for="(rating,index) in food.ratings" :key="index" class="rating-item border-1px">
-                <div class="rating-time">{{rating.rateTime}}</div>
+                <div class="rating-time">{{rating.rateTime|formatDate}}</div>
                 <div class="user">
                   <span class="name">{{rating.username}}</span>
                   <div class="user-img">
@@ -52,7 +52,7 @@
               </li>
             </ul>
             <div class="no-rating" v-else>
-
+              暂无评价
             </div>
           </div>
         </div>
@@ -68,6 +68,7 @@ import BScroll from 'better-scroll'
 import cartcontrol from '../cartcontrol/cartcontrol.vue'
 import slpit from '../split/split.vue'
 import ratingselect from '../ratingselect/ratingselect.vue'
+import {formatDate} from '../../common/js/date.js'
 const ALL = 2
 export default {
   props: {
@@ -127,6 +128,12 @@ export default {
         }else{
           return type===this.selectType
         }
+    }
+  },
+  filters:{
+    formatDate(time) {
+      let date=new Date(time);
+      return formatDate(date,'yyyy-MM-dd hh:mm')
     }
   }
 }
@@ -306,6 +313,11 @@ export default {
             color: rgb(147, 153, 159);
           }
         }
+      }
+      .no-rating{
+        padding: 16px 0;
+        font-size: 12px;
+        color: rgb(147, 153, 159);
       }
     }
   }
