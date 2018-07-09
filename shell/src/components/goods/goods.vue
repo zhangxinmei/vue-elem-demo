@@ -74,7 +74,6 @@
         res = res.data;
         if (res.errno === ERR_OK) {
           this.goods = res.data
-          console.log(111, this.goods);
           this.$nextTick(() => {
             this.initScroll()
             this.calculateHeight()
