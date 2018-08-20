@@ -28,33 +28,33 @@
       <img :src="seller.avatar" alt="">
     </div>
     <transition name="fade">
- <div v-show="isDetailShow" class="detial">
-      <!--CSS sticky footer -->
-      <div class="detail-wrap clearfix">
-        <div class="detail-mian">
-          <div class="detail-hd">
-            <h1>{{seller.name}}</h1>
-            <div class="hd-star">
-              <star :size="48" :score="seller.score"></star>
+      <div v-show="isDetailShow" class="detial">
+        <!--CSS sticky footer -->
+        <div class="detail-wrap clearfix">
+          <div class="detail-mian">
+            <div class="detail-hd">
+              <h1>{{seller.name}}</h1>
+              <div class="hd-star">
+                <star :size="48" :score="seller.score"></star>
+              </div>
+            </div>
+            <headline :titleText="titleTextOffer"></headline>
+            <ul class="supports" v-if="seller.supports">
+              <li class="supports-item" v-for="(item,index) in seller.supports" :key="index">
+                <span class="icon" :class="classMsp[seller.supports[index].type]"></span>
+                <span class="text">{{seller.supports[index].description}}</span>
+              </li>
+            </ul>
+            <headline :titleText="titleTextBulletin"></headline>
+            <div class="bulletin">
+              <p class="content">{{seller.bulletin}}</p>
             </div>
           </div>
-          <headline :titleText="titleTextOffer"></headline>
-          <ul class="supports" v-if="seller.supports">
-            <li class="supports-item" v-for="(item,index) in seller.supports" :key="index">
-              <span class="icon" :class="classMsp[seller.supports[index].type]"></span>
-              <span class="text">{{seller.supports[index].description}}</span>
-            </li>
-          </ul>
-          <headline :titleText="titleTextBulletin"></headline>
-          <div class="bulletin">
-            <p class="content">{{seller.bulletin}}</p>
-          </div>
+        </div>
+        <div class="detail-cloase" @click="isDetailShow=false">
+          <i class="icon-close"></i>
         </div>
       </div>
-      <div class="detail-cloase" @click="isDetailShow=false">
-        <i class="icon-close"></i>
-      </div>
-    </div>
     </transition>
   </div>
 </template>
@@ -233,13 +233,15 @@ export default {
     z-index: 2;
     backdrop-filter: blur(10px);
     background: rgba(7, 17, 27, 0.8);
-     &.fade-enter-active, &.fade-leave-active{
-        transition: all 0.5s;
-     }
-     &.fade-enter, &.fade-leave-active{
-        opacity: 0;
-        background:rgba(7, 17, 27, 0);
-     } 
+    &.fade-enter-active,
+    &.fade-leave-active {
+      transition: all 0.5s;
+    }
+    &.fade-enter,
+    &.fade-leave-active {
+      opacity: 0;
+      background: rgba(7, 17, 27, 0);
+    }
     .detail-wrap {
       width: 100%;
       min-height: 100%;
